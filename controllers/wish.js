@@ -113,9 +113,7 @@ async function showComments (req, res) {
 async function createComment (req, res) {
     const id = parseInt(req.params.id);
     const { text, parentId } = req.body;
-
     try {
-
         if (typeof text != "string" || text.length < 1) {
             throw new Error("Cannot create an empty comment.");
         } else if (!(typeof parentId == 'number' || !parentId)) {
@@ -125,6 +123,7 @@ async function createComment (req, res) {
         const wish = await Wish.getOneById(id);
 
         const possibleParents = await Comment.getAllByWishId(id, idsOnly=true);
+
         if (parentId && !possibleParents.includes(parentId)) {
             throw new Error("Cannot create comment with invalid parent for wish.");
         }
