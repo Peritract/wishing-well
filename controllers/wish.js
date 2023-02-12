@@ -72,18 +72,20 @@ async function create (req, res) {
     try {
         if (typeof text != "string" || text.length < 1) {
             throw new Error("Cannot create an empty wish.");
-        } else if (!tagIds || !(tagIds instanceof Array) || !tagIds.every(t => typeof t == 'number')) {
+        } else if (tagIds && (!(tagIds instanceof Array) || !tagIds.every(t => typeof t == 'number'))) {
             throw new Error("Cannot create a wish with invalid tags");
         }
         const data = await Wish.create(text);
         const createdTagIds = [];
 
-        for await (const t of tagIds) {
-            const conn = await TagConnection.create(data.id, t);
-            createdTagIds.push(conn.tag_id);
+        if (tagIds) {
+            for await (const t of tagIds) {
+                const conn = await TagConnection.create(data.id, t);
+                createdTagIds.push(conn.tag_id);
+            }    
         }
 
-        const createdWish = Wish.getOneById(data.id);
+        const createdWish = await Wish.getOneById(data.id);
 
         res.status(201).json(createdWish);
     } catch (err) {
