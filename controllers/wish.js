@@ -98,8 +98,7 @@ async function create (req, res) {
 }
 
 async function showComments (req, res) {
-    const id = parseInt(req.params.id);
-
+    const id = parseInt(req.params.wishId);
     try {
         const data = await Comment.getAllByWishId(id);
         res.json(data);
@@ -113,7 +112,7 @@ async function showComments (req, res) {
 }
 
 async function createComment (req, res) {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.wishId);
     const { text, parentId } = req.body;
     try {
         if (typeof text != "string" || text.length < 1) {

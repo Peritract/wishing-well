@@ -4,8 +4,8 @@ const { showComments, createComment, showComment, editComment } = require("../co
 
 const commentRouter = Router();
 
-commentRouter.get("/:id/comments", showComments);
-commentRouter.post("/:id/comments", createComment);
+commentRouter.get("/:wishId/comments", showComments);
+commentRouter.post("/:wishId/comments", createComment);
 commentRouter.get("/:wishId/comments/:commentId", showComment);
 commentRouter.patch("/:wishId/comments/:commentId", editComment);
 
